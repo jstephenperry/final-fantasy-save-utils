@@ -1,0 +1,68 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:FF6SaveEditor.Plugin.ViewModels"
+             xmlns:views="using:FF6SaveEditor.Plugin.Views"
+             x:Class="FF6SaveEditor.Plugin.Views.SlotView"
+             x:DataType="vm:SlotViewModel">
+
+    <Grid RowDefinitions="Auto,*,Auto,Auto">
+        <!-- Gil / Time / Steps -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8" Spacing="16">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <TextBlock Text="Gil:" VerticalAlignment="Center" FontWeight="Bold"/>
+                <NumericUpDown Value="{Binding Gil}" Minimum="0" Maximum="9999999"
+                               FormatString="N0" Width="140"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <TextBlock Text="Time:" VerticalAlignment="Center" FontWeight="Bold"/>
+                <NumericUpDown Value="{Binding Hours}" Minimum="0" Maximum="255" Width="80"/>
+                <TextBlock Text=":" VerticalAlignment="Center"/>
+                <NumericUpDown Value="{Binding Minutes}" Minimum="0" Maximum="59" Width="70"/>
+                <TextBlock Text=":" VerticalAlignment="Center"/>
+                <NumericUpDown Value="{Binding Seconds}" Minimum="0" Maximum="59" Width="70"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <TextBlock Text="Steps:" VerticalAlignment="Center" FontWeight="Bold"/>
+                <NumericUpDown Value="{Binding Steps}" Minimum="0" Maximum="16777215"
+                               FormatString="N0" Width="120"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Character list + editor -->
+        <Grid Grid.Row="1" ColumnDefinitions="180,*">
+            <!-- Character List -->
+            <ListBox Grid.Column="0"
+                     ItemsSource="{Binding Characters}"
+                     SelectedItem="{Binding SelectedCharacter}"
+                     Margin="0,0,8,0">
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="vm:CharacterViewModel">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding Level, StringFormat='Lv.{0}'}"
+                                       Foreground="#888" IsVisible="{Binding !IsEmpty}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <!-- Character Editor -->
+            <Border Grid.Column="1" Padding="8" CornerRadius="4">
+                <ContentControl Content="{Binding SelectedCharacter}">
+                    <ContentControl.ContentTemplate>
+                        <DataTemplate x:DataType="vm:CharacterViewModel">
+                            <views:CharacterView/>
+                        </DataTemplate>
+                    </ContentControl.ContentTemplate>
+                </ContentControl>
+            </Border>
+        </Grid>
+
+        <Separator Grid.Row="2" Margin="0,8"/>
+
+        <!-- Inventory -->
+        <Expander Grid.Row="3" Header="Inventory (256 slots)" IsExpanded="False">
+            <views:InventoryView DataContext="{Binding Inventory}"/>
+        </Expander>
+    </Grid>
+</UserControl>

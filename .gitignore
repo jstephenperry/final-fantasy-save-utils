@@ -1,0 +1,66 @@
+# .NET build output
+bin/
+obj/
+out/
+
+# NuGet packages
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+project.lock.json
+project.fragment.lock.json
+
+# .NET runtime artifacts
+*.deps.json
+*.runtimeconfig.json
+*.runtimeconfig.dev.json
+*.runtimeconfig.prod.json
+
+# Compiled output
+*.dll
+*.exe
+*.pdb
+*.mdb
+*.lib
+*.so
+*.dylib
+
+# MSBuild logs
+msbuild.log
+msbuild.err
+msbuild.wrn
+
+# Visual Studio / MSBuild
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+*.DotSettings.user
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# Publish profiles
+**/Properties/PublishProfiles/
+
+# Avalonia designer artifacts
+**/*.axaml.g.cs
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+

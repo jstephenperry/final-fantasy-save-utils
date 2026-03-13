@@ -1,0 +1,99 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:FF6SaveEditor.Plugin.ViewModels"
+             x:Class="FF6SaveEditor.Plugin.Views.CharacterView"
+             x:DataType="vm:CharacterViewModel">
+
+    <ScrollViewer>
+        <StackPanel Spacing="12" IsVisible="{Binding !IsEmpty}">
+            <!-- Character Name Header -->
+            <TextBlock Text="{Binding Name}" FontSize="20" FontWeight="Bold"/>
+
+            <!-- Stats Grid -->
+            <Grid ColumnDefinitions="Auto,120,20,Auto,120" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Level:" VerticalAlignment="Center" Margin="0,0,8,4"/>
+                <NumericUpDown Grid.Row="0" Grid.Column="1" Value="{Binding Level}" Minimum="1" Maximum="99" Margin="0,0,0,4"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="HP:" VerticalAlignment="Center" Margin="0,0,8,4"/>
+                <NumericUpDown Grid.Row="1" Grid.Column="1" Value="{Binding CurrentHp}" Minimum="0" Maximum="9999" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="/" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="1" Grid.Column="3" Text="Max:" VerticalAlignment="Center" Margin="4,0,8,4"/>
+                <NumericUpDown Grid.Row="1" Grid.Column="4" Value="{Binding MaxHp}" Minimum="0" Maximum="9999" Margin="0,0,0,4"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="MP:" VerticalAlignment="Center" Margin="0,0,8,4"/>
+                <NumericUpDown Grid.Row="2" Grid.Column="1" Value="{Binding CurrentMp}" Minimum="0" Maximum="9999" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="2" Grid.Column="2" Text="/" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="2" Grid.Column="3" Text="Max:" VerticalAlignment="Center" Margin="4,0,8,4"/>
+                <NumericUpDown Grid.Row="2" Grid.Column="4" Value="{Binding MaxMp}" Minimum="0" Maximum="9999" Margin="0,0,0,4"/>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="EXP:" VerticalAlignment="Center" Margin="0,0,8,4"/>
+                <NumericUpDown Grid.Row="3" Grid.Column="1" Value="{Binding Experience}" Minimum="0" Maximum="16777215"
+                               FormatString="N0" Margin="0,0,0,4" Grid.ColumnSpan="4"/>
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Vigor:" VerticalAlignment="Center" Margin="0,0,8,4"/>
+                <NumericUpDown Grid.Row="4" Grid.Column="1" Value="{Binding Vigor}" Minimum="0" Maximum="128" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="4" Grid.Column="3" Text="Speed:" VerticalAlignment="Center" Margin="4,0,8,4"/>
+                <NumericUpDown Grid.Row="4" Grid.Column="4" Value="{Binding Speed}" Minimum="0" Maximum="128" Margin="0,0,0,4"/>
+
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="Stamina:" VerticalAlignment="Center" Margin="0,0,8,4"/>
+                <NumericUpDown Grid.Row="5" Grid.Column="1" Value="{Binding Stamina}" Minimum="0" Maximum="128" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="5" Grid.Column="3" Text="Mag.Pwr:" VerticalAlignment="Center" Margin="4,0,8,4"/>
+                <NumericUpDown Grid.Row="5" Grid.Column="4" Value="{Binding MagicPower}" Minimum="0" Maximum="128" Margin="0,0,0,4"/>
+            </Grid>
+
+            <Separator/>
+
+            <!-- Equipment -->
+            <TextBlock Text="Equipment" FontSize="16" FontWeight="SemiBold"/>
+            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" Margin="0,0,0,4">
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Weapon:" VerticalAlignment="Center" Margin="0,0,8,4"/>
+                <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding AvailableWeapons}"
+                          SelectedItem="{Binding SelectedWeapon}" HorizontalAlignment="Stretch" Margin="0,0,0,4">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate><TextBlock Text="{Binding Name}"/></DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Shield:" VerticalAlignment="Center" Margin="0,0,8,4"/>
+                <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding AvailableShields}"
+                          SelectedItem="{Binding SelectedShield}" HorizontalAlignment="Stretch" Margin="0,0,0,4">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate><TextBlock Text="{Binding Name}"/></DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Helmet:" VerticalAlignment="Center" Margin="0,0,8,4"/>
+                <ComboBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding AvailableHelmets}"
+                          SelectedItem="{Binding SelectedHelmet}" HorizontalAlignment="Stretch" Margin="0,0,0,4">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate><TextBlock Text="{Binding Name}"/></DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Armor:" VerticalAlignment="Center" Margin="0,0,8,4"/>
+                <ComboBox Grid.Row="3" Grid.Column="1" ItemsSource="{Binding AvailableArmors}"
+                          SelectedItem="{Binding SelectedArmor}" HorizontalAlignment="Stretch" Margin="0,0,0,4">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate><TextBlock Text="{Binding Name}"/></DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Relic 1:" VerticalAlignment="Center" Margin="0,0,8,4"/>
+                <ComboBox Grid.Row="4" Grid.Column="1" ItemsSource="{Binding AvailableRelics}"
+                          SelectedItem="{Binding SelectedRelic1}" HorizontalAlignment="Stretch" Margin="0,0,0,4">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate><TextBlock Text="{Binding Name}"/></DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="Relic 2:" VerticalAlignment="Center" Margin="0,0,8,4"/>
+                <ComboBox Grid.Row="5" Grid.Column="1" ItemsSource="{Binding AvailableRelics}"
+                          SelectedItem="{Binding SelectedRelic2}" HorizontalAlignment="Stretch" Margin="0,0,0,4">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate><TextBlock Text="{Binding Name}"/></DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

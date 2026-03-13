@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/SaveEditor.Shell.Abstractions/SaveEditor.Shell.Abstractions.csproj" />
+    <Project Path="src/SaveEditor.Shell/SaveEditor.Shell.csproj" />
+    <Project Path="src/FF4SaveEditor.Core/FF4SaveEditor.Core.csproj" />
+    <Project Path="src/FF4SaveEditor.Plugin/FF4SaveEditor.Plugin.csproj" />
+    <Project Path="src/FF4SaveEditor.Tests/FF4SaveEditor.Tests.csproj" />
+    <Project Path="src/FF6SaveEditor.Core/FF6SaveEditor.Core.csproj" />
+    <Project Path="src/FF6SaveEditor.Plugin/FF6SaveEditor.Plugin.csproj" />
+    <Project Path="src/FF6SaveEditor.Tests/FF6SaveEditor.Tests.csproj" />
+  </Folder>
+</Solution>
