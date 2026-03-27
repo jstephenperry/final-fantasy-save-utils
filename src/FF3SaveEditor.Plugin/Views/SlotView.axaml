@@ -1,0 +1,47 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:FF3SaveEditor.Plugin.ViewModels"
+             xmlns:views="using:FF3SaveEditor.Plugin.Views"
+             x:Class="FF3SaveEditor.Plugin.Views.SlotView"
+             x:DataType="vm:SlotViewModel">
+
+    <Grid RowDefinitions="Auto,*">
+        <!-- Gil + Max All Stats -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8" Spacing="8">
+            <TextBlock Text="Gil:" VerticalAlignment="Center" FontWeight="Bold"/>
+            <NumericUpDown Value="{Binding Gil}" Minimum="0" Maximum="9999999"
+                           FormatString="N0" Width="140"/>
+            <Button Content="Max All Stats" Command="{Binding MaxAllStatsCommand}"/>
+        </StackPanel>
+
+        <!-- Character list + editor -->
+        <Grid Grid.Row="1" ColumnDefinitions="180,*">
+            <ListBox Grid.Column="0"
+                     ItemsSource="{Binding Characters}"
+                     SelectedItem="{Binding SelectedCharacter}"
+                     Margin="0,0,8,0">
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="vm:CharacterViewModel">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding JobName}" Foreground="#888"
+                                       IsVisible="{Binding !IsEmpty}"/>
+                            <TextBlock Text="{Binding Level, StringFormat='Lv.{0}'}"
+                                       Foreground="#666" IsVisible="{Binding !IsEmpty}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <Border Grid.Column="1" Padding="8" CornerRadius="4">
+                <ContentControl Content="{Binding SelectedCharacter}">
+                    <ContentControl.ContentTemplate>
+                        <DataTemplate x:DataType="vm:CharacterViewModel">
+                            <views:CharacterView/>
+                        </DataTemplate>
+                    </ContentControl.ContentTemplate>
+                </ContentControl>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

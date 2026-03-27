@@ -1,0 +1,45 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:FF3SaveEditor.Plugin.ViewModels"
+             x:Class="FF3SaveEditor.Plugin.Views.CharacterView"
+             x:DataType="vm:CharacterViewModel">
+
+    <ScrollViewer>
+        <StackPanel Spacing="12" IsVisible="{Binding !IsEmpty}">
+            <StackPanel Orientation="Horizontal" Spacing="12">
+                <TextBlock Text="{Binding Name}" FontSize="20" FontWeight="Bold"/>
+                <TextBlock Text="{Binding JobName}" FontSize="16" Foreground="#888" VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <Grid ColumnDefinitions="Auto,120,20,Auto,120" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Level:" VerticalAlignment="Center" Margin="0,0,8,4"/>
+                <NumericUpDown Grid.Row="0" Grid.Column="1" Value="{Binding Level}" Minimum="1" Maximum="99" Margin="0,0,0,4"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="HP:" VerticalAlignment="Center" Margin="0,0,8,4"/>
+                <NumericUpDown Grid.Row="1" Grid.Column="1" Value="{Binding CurrentHp}" Minimum="0" Maximum="9999" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="/" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="1" Grid.Column="3" Text="Max:" VerticalAlignment="Center" Margin="4,0,8,4"/>
+                <NumericUpDown Grid.Row="1" Grid.Column="4" Value="{Binding MaxHp}" Minimum="0" Maximum="9999" Margin="0,0,0,4"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="EXP:" VerticalAlignment="Center" Margin="0,0,8,4"/>
+                <NumericUpDown Grid.Row="2" Grid.Column="1" Value="{Binding Experience}" Minimum="0" Maximum="16777215"
+                               FormatString="N0" Margin="0,0,0,4" Grid.ColumnSpan="4"/>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Str:" VerticalAlignment="Center" Margin="0,0,8,4"/>
+                <NumericUpDown Grid.Row="3" Grid.Column="1" Value="{Binding Strength}" Minimum="0" Maximum="99" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="3" Grid.Column="3" Text="Agi:" VerticalAlignment="Center" Margin="4,0,8,4"/>
+                <NumericUpDown Grid.Row="3" Grid.Column="4" Value="{Binding Agility}" Minimum="0" Maximum="99" Margin="0,0,0,4"/>
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Vit:" VerticalAlignment="Center" Margin="0,0,8,4"/>
+                <NumericUpDown Grid.Row="4" Grid.Column="1" Value="{Binding Vitality}" Minimum="0" Maximum="99" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="4" Grid.Column="3" Text="Int:" VerticalAlignment="Center" Margin="4,0,8,4"/>
+                <NumericUpDown Grid.Row="4" Grid.Column="4" Value="{Binding Intelligence}" Minimum="0" Maximum="99" Margin="0,0,0,4"/>
+
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="Spi:" VerticalAlignment="Center" Margin="0,0,8,4"/>
+                <NumericUpDown Grid.Row="5" Grid.Column="1" Value="{Binding Spirit}" Minimum="0" Maximum="99" Margin="0,0,0,4"/>
+            </Grid>
+
+            <Button Content="Max Stats" Command="{Binding MaxStatsCommand}" Margin="0,4,0,0"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

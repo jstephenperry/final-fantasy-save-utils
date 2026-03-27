@@ -20,6 +20,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SaveEditor.Shell.Abstractions\SaveEditor.Shell.Abstractions.csproj" />
+    <ProjectReference Include="..\FF1SaveEditor.Plugin\FF1SaveEditor.Plugin.csproj" />
+    <ProjectReference Include="..\FF2SaveEditor.Plugin\FF2SaveEditor.Plugin.csproj" />
+    <ProjectReference Include="..\FF3SaveEditor.Plugin\FF3SaveEditor.Plugin.csproj" />
     <ProjectReference Include="..\FF4SaveEditor.Plugin\FF4SaveEditor.Plugin.csproj" />
     <ProjectReference Include="..\FF6SaveEditor.Plugin\FF6SaveEditor.Plugin.csproj" />
   </ItemGroup>

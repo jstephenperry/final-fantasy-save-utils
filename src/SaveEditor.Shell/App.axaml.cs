@@ -1,6 +1,9 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using FF1SaveEditor.Plugin;
+using FF2SaveEditor.Plugin;
+using FF3SaveEditor.Plugin;
 using FF4SaveEditor.Plugin;
 using FF6SaveEditor.Plugin;
 using SaveEditor.Shell.Abstractions;
@@ -22,6 +25,9 @@ public class App : Application
         {
             var plugins = new IGamePlugin[]
             {
+                new FF1GamePlugin(),
+                new FF2GamePlugin(),
+                new FF3GamePlugin(),
                 new FF4GamePlugin(),
                 new FF6GamePlugin(),
             };

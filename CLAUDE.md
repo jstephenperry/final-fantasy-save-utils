@@ -10,6 +10,15 @@ final-fantasy-save-utils/
   src/
     SaveEditor.Shell/                  # Shared Avalonia app (the single executable)
     SaveEditor.Shell.Abstractions/     # IGamePlugin + ISlotViewModel interfaces
+    FF1SaveEditor.Core/                # FF1 models, IO, GameData (no UI)
+    FF1SaveEditor.Plugin/              # FF1 views, viewmodels, FF1GamePlugin
+    FF1SaveEditor.Tests/               # FF1 xUnit tests
+    FF2SaveEditor.Core/                # FF2 models, IO, GameData (no UI)
+    FF2SaveEditor.Plugin/              # FF2 views, viewmodels, FF2GamePlugin
+    FF2SaveEditor.Tests/               # FF2 xUnit tests
+    FF3SaveEditor.Core/                # FF3 models, IO, GameData (no UI)
+    FF3SaveEditor.Plugin/              # FF3 views, viewmodels, FF3GamePlugin
+    FF3SaveEditor.Tests/               # FF3 xUnit tests
     FF4SaveEditor.Core/                # FF4 models, IO, GameData, Services (no UI)
     FF4SaveEditor.Plugin/              # FF4 views, viewmodels, FF4GamePlugin
     FF4SaveEditor.Tests/               # FF4 xUnit tests
@@ -36,6 +45,55 @@ final-fantasy-save-utils/
 - Game data (item databases, etc.) are embedded JSON resources in Core
 - Save file IO reads/writes raw bytes; models expose typed properties over a raw byte buffer for round-trip fidelity
 - Checksums and validation must match the actual game's algorithm exactly (verified against ROM disassembly)
+
+## FF1-Specific Details
+
+- **SRAM format**: 8192 bytes total. Working copy at $0000-$03FF, validated copy at $0400-$07FF (1 slot)
+- **Validation**: Magic bytes $55 and $AA, plus 8-bit ADC checksum
+- **Checksum**: 8-bit sum with carry propagation over 4 pages (256 bytes each): CLC once, then for X=0..255: ADC page0,X; ADC page1,X; ADC page2,X; ADC page3,X. Total must equal $FF. Checksum byte at offset $FD. (bank_0F.asm, VerifyChecksum at $C888)
+- **Character data**: 4 chars x 64 bytes at slot offset $100
+- **Character layout (64 bytes)**: ClassId(1), Status(1), Name(4, FF1 text), unused(1), EXP(3, 24-bit LE), CurrentHP(2), MaxHP(2), unused(2), Str/Agi/Int/Vit/Luck(5), unused(3), Weapons(4, high bit=equipped), Armor(4, high bit=equipped), Damage/Hit%/Absorb/Evade%(4), unused(2), Level(1)
+- **Gil**: 24-bit LE at slot offset $1C, max 999,999
+- **Key items**: Individual byte flags at offsets $20-$31 (Lute, Crown, Crystal, Herb, MysticKey, TNT, Adamant, Slab, Ruby, Rod, Floater, Chime, Tail, Cube, Bottle, Oxyale, FireOrb, WaterOrb)
+- **Magic data**: At slot offset $300, 3 spells per level x 8 levels x 4 chars + MP current/max
+- **Text encoding**: $80-$89=0-9, $8A-$A3=A-Z, $A4-$BD=a-z, $FF=space/terminator
+- **Classes**: Fighter(0), Thief(1), BlackBelt(2), RedMage(3), WhiteMage(4), BlackMage(5), Knight(6), Ninja(7), Master(8), RedWizard(9), WhiteWizard(10), BlackWizard(11)
+- **Reference disassembly**: https://github.com/Entroper/FF1Disassembly (Disch), https://github.com/BenWenger/FinalFantasyDisassembly
+- **SRAM editor reference**: https://github.com/jdratlif/ffse
+
+## FF2-Specific Details
+
+- **SRAM format**: 8192 bytes = working area ($0000-$02FF) + 4 slots x 768 bytes at $0300/$0600/$0900/$0C00
+- **Validation**: $5A at slot offset $FE, checksum at $FF
+- **Checksum**: 8-bit byte sum (CLC before each ADC, no carry propagation), EOR $FF. Total of all 768 bytes must equal $FF. (0F/DA8F in disassembly)
+- **Character data**: 4 chars x 64 bytes, split into two blocks (Properties 1 at $100, Properties 2 at $200)
+- **Properties 1** (64 bytes): CharID/Guest(1), Status(1), Name(6), HP(2+2), MP(2+2), BaseStats(6: Str/Agi/Sta/Int/Spi/Mag), AttackStats(3), Equipment(5: Helmet/Armor/Gloves/RHand/LHand), Items(2), StatMods(6), OffhandStats(3), Defense(1), Evade(2+2), Elements(1), SpellPenalty(1), Spells(16)
+- **Properties 2** (64 bytes): WeaponProficiency(16: 8 types x 2 bytes), SpellProficiency(32: 16 spells x 2 bytes), EvadeLvl/Exp(2+2), Presence/Row(1)
+- **Gil**: 24-bit LE at slot offset $1C
+- **Inventory**: 32 item IDs at $60 (no quantities — FF2 doesn't stack items)
+- **Keywords**: 16 bytes at $80 (FF2's Ask/Learn/Memorize system)
+- **Key items**: 16-bit bitmask at $1A-$1B (Canoe, Ring, Pass, Mythril, Snowcraft, Goddess' Bell, etc.)
+- **Skill-based progression**: No XP/levels. Stats grow through use (weapon skills, spell proficiency, HP/MP growth)
+- **Fan translations**: Demiforce (1998) and ChaosRush translations do NOT change save format
+- **Reference disassembly**: https://github.com/everything8215/ff2 (ram-map.txt)
+
+## FF3-Specific Details
+
+- **SRAM format**: 8192 bytes = working area ($0000-$03FF) + 3 slots x 1024 bytes at $0400/$0800/$0C00
+- **Validation**: $5A at slot offset $19, checksum at $1A. Also $55/$AA at $7F38/$7F39 for save count
+- **Checksum**: 8-bit byte sum (CLC before each ADC, no carry propagation), EOR $FF. Total of all 1024 bytes must equal $FF. (3D/AE5C in disassembly)
+- **Character data**: 4 chars x 64 bytes, split into two blocks (Block A at $100, Block B at $200)
+- **Block A** (64 bytes): JobId(1), Level(1), Status(1), EXP(3, 24-bit LE), Name(6), CurrentHP(2), MaxHP(2), Int/Spi/Str/Agi/Vit(5), ModifiedStats(5), Elements/Defense(4), AttackStats(10: R+L hand), AbsorbedElements/DefenseStats(4), StatusImmunity(1), unused(1), MP per level(16: 8 levels x current/max)
+- **Block B** (64 bytes): Equipment(7: Helmet/Armor/Gloves/RHand/RArrowQty/LHand/LArrowQty), Spells(8), Row/Flags(1), JobLevels(44: 22 jobs x 2 bytes level/exp)
+- **Gil**: 24-bit LE at slot offset $1C, max 9,999,999
+- **Inventory**: 32 IDs at $C0 + 32 quantities at $E0 (separate arrays)
+- **Capacity Points**: At slot offset $1B
+- **Crystal Level**: At slot offset $21 (0x00=locked, 0x01=Wind, 0x03=Fire, 0x07=Water, 0x0F=Earth, 0x1F=Eureka)
+- **Fat Chocobo**: 256 bytes of item storage at $300-$3FF
+- **Jobs** (22 total): OnionKid(0), Fighter(1), Monk(2), WhiteMage(3), BlackMage(4), RedMage(5), Hunter(6), Knight(7), Thief(8), Scholar(9), Geomancer(10), Dragoon(11), Viking(12), Karateka(13), MagicKnight(14), Conjurer(15), Bard(16), Warlock(17), Shaman(18), Summoner(19), Sage(20), Ninja(21)
+- **Fan translation**: Neill Corlett/A.W. Jackson/SoM2Freak (1999) does NOT change save format
+- **Reference disassembly**: https://github.com/everything8215/ff3 (field-ram.txt)
+- **SRAM editor reference**: https://github.com/Binarynova/FF3jSRAMEditor
 
 ## FF4-Specific Details
 
@@ -75,10 +133,12 @@ final-fantasy-save-utils/
 ## OpenEmu Integration Notes
 
 - OpenEmu SNES9x saves use `.sav` extension in `~/Library/Application Support/OpenEmu/SNES9x/Battery Saves/`
-- Filename must match ROM name exactly (e.g., `Final Fantasy II (USA) (Rev 1).sav`)
-- **Auto save state overrides battery saves** — must delete the auto save state at `~/Library/Application Support/OpenEmu/Save States/SuperNES/<game>/Auto Save State.oesavestate` for a modified `.sav` to take effect
+- OpenEmu NES saves use `.sav` extension in `~/Library/Application Support/OpenEmu/FCEUX/Battery Saves/`
+- Filename must match ROM name exactly (e.g., `Final Fantasy II (USA) (Rev 1).sav`, `Final Fantasy (USA).sav`)
+- **Auto save state overrides battery saves** — must delete the auto save state at `~/Library/Application Support/OpenEmu/Save States/<system>/<game>/Auto Save State.oesavestate` for a modified `.sav` to take effect
 - OpenEmu must be fully quit before replacing save files
 - Rev 0 and Rev 1 ROMs use the same save format
+- NES fan translation patches (Demiforce FF2, Neill Corlett FF3) do not change the SRAM save format — the editor works with both Japanese and English-patched ROMs
 
 ## Build & Test
 

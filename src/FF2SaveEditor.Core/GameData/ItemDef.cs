@@ -1,0 +1,31 @@
+using System.Text.Json.Serialization;
+
+namespace FF2SaveEditor.Core.GameData;
+
+public class ItemDef
+{
+    [JsonPropertyName("id")]
+    public byte Id { get; set; }
+
+    [JsonPropertyName("name")]
+    public string Name { get; set; } = "";
+
+    [JsonPropertyName("category")]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public ItemCategory Category { get; set; }
+
+    [JsonIgnore]
+    public string DisplayLabel => Id == 0 ? Name : $"{Name} ({Category})";
+}
+
+public enum ItemCategory
+{
+    None,
+    Weapon,
+    Shield,
+    Helmet,
+    Armor,
+    Gloves,
+    Consumable,
+    KeyItem,
+}
