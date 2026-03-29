@@ -1,5 +1,11 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ff1vm="using:FF1SaveEditor.Plugin.ViewModels"
+             xmlns:ff1views="using:FF1SaveEditor.Plugin.Views"
+             xmlns:ff2vm="using:FF2SaveEditor.Plugin.ViewModels"
+             xmlns:ff2views="using:FF2SaveEditor.Plugin.Views"
+             xmlns:ff3vm="using:FF3SaveEditor.Plugin.ViewModels"
+             xmlns:ff3views="using:FF3SaveEditor.Plugin.Views"
              xmlns:ff4vm="using:FF4SaveEditor.Plugin.ViewModels"
              xmlns:ff4views="using:FF4SaveEditor.Plugin.Views"
              xmlns:ff6vm="using:FF6SaveEditor.Plugin.ViewModels"
@@ -12,6 +18,15 @@
     </Application.Styles>
 
     <Application.DataTemplates>
+        <DataTemplate DataType="{x:Type ff1vm:SlotViewModel}">
+            <ff1views:SlotView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type ff2vm:SlotViewModel}">
+            <ff2views:SlotView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type ff3vm:SlotViewModel}">
+            <ff3views:SlotView/>
+        </DataTemplate>
         <DataTemplate DataType="{x:Type ff4vm:SlotViewModel}">
             <ff4views:SlotView/>
         </DataTemplate>

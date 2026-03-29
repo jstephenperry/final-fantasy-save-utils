@@ -2,6 +2,15 @@
   <Folder Name="/src/">
     <Project Path="src/SaveEditor.Shell.Abstractions/SaveEditor.Shell.Abstractions.csproj" />
     <Project Path="src/SaveEditor.Shell/SaveEditor.Shell.csproj" />
+    <Project Path="src/FF1SaveEditor.Core/FF1SaveEditor.Core.csproj" />
+    <Project Path="src/FF1SaveEditor.Plugin/FF1SaveEditor.Plugin.csproj" />
+    <Project Path="src/FF1SaveEditor.Tests/FF1SaveEditor.Tests.csproj" />
+    <Project Path="src/FF2SaveEditor.Core/FF2SaveEditor.Core.csproj" />
+    <Project Path="src/FF2SaveEditor.Plugin/FF2SaveEditor.Plugin.csproj" />
+    <Project Path="src/FF2SaveEditor.Tests/FF2SaveEditor.Tests.csproj" />
+    <Project Path="src/FF3SaveEditor.Core/FF3SaveEditor.Core.csproj" />
+    <Project Path="src/FF3SaveEditor.Plugin/FF3SaveEditor.Plugin.csproj" />
+    <Project Path="src/FF3SaveEditor.Tests/FF3SaveEditor.Tests.csproj" />
     <Project Path="src/FF4SaveEditor.Core/FF4SaveEditor.Core.csproj" />
     <Project Path="src/FF4SaveEditor.Plugin/FF4SaveEditor.Plugin.csproj" />
     <Project Path="src/FF4SaveEditor.Tests/FF4SaveEditor.Tests.csproj" />
